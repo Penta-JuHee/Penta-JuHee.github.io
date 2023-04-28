@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="penta-juhee">
+    <meta name="keywords" content="펜타시스템 신선임">
+    <meta name="description" content="shin's birthday">
+    <meta name="copyright" content="(우 07241) 서울시 영등포구 여의공원로 115 세우빌딩 10층">
+    <meta property="og:title" content="펜타시스템 태블로">
+    <meta property="og:description" content="펜타시스템 신선임님">
+    <meta property="og:image" content="/resources/images/shin_hi.png">
+    <meta name="robots" content="noindex">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="펜타시스템 신선임">
+    <meta property="og:description" content="펜타시스템 태블로 대표 홈페이지">
+    <meta property="og:image" content="/resources/images/shin_4to.png">
+    <meta property="og:url" content="https://penta-juhee.github.io/shinseonyimnim.html">
+    <title>ShinSeonYimNim</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Flip.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: black;
+            padding: 0;
+            margin: 0;
+            font-family: 'Signika Negative', sans-serif, Arial;
+            font-weight: 300;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container.grid,
+        .container.columns {
+            align-content: stretch;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        .letter {
+            text-align: center;
+            color: black;
+            font-size: 10vmax;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 6px;
+        }
+
+        .container.grid .letter {
+            flex-basis: 50%;
+        }
+
+        .container.columns .letter {
+            flex-basis: 25%;
+        }
+
+        .for,
+        .gsap {
+            font-size: 5vmax;
+            color: white;
+        }
+
+        .for {
+            padding: 2px 1.6vmax;
+            font-weight: 300;
+            display: none;
+        }
+
+        .gsap {
+            padding: 2px 0;
+            font-weight: 600;
+            display: none;
+        }
+
+        .container.final .for,
+        .container.final .gsap {
+            display: block;
+        }
+
+        .F {
+            background: rgba(0, 188, 212, 0.7);
+        }
+
+        .l {
+            background: rgba(40, 150, 255, 0.7);
+        }
+
+        .i {
+            background: rgba(153, 80, 220, 0.7);
+        }
+
+        .p {
+            background: rgba(90, 108, 225, 0.7);
+        }
+
+        .container.plain .letter {
+            background: transparent;
+            color: white;
+            padding: 0;
+        }
+
+        .logo {
+            position: fixed;
+            width: 60px;
+            bottom: 20px;
+            right: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container final">
+        <div class="letter F">신</div>
+        <div class="letter l">선</div>
+        <div class="letter i">임</div>
+        <div class="letter p">님</div>
+        <div class="for">for</div>
+        <div class="gsap"><img src="/resources/images/shin_hi.png" /></div>
+    </div>
+    <script>
+        gsap.registerPlugin(Flip);
+
+        const layouts = ['final', 'plain', 'columns', 'grid'];
+        const container = document.querySelector('.container');
+        let curLayout = 0;
+
+        function nextState() {
+            const state = Flip.getState('.letter, .for, .gsap', {
+                props: 'color,backgroundColor',
+                simple: true,
+            });
+
+            container.classList.remove(layouts[curLayout]);
+            curLayout = (curLayout + 1) % layouts.length;
+            container.classList.add(layouts[curLayout]);
+
+            Flip.from(state, {
+                absolute: true,
+                stagger: 0.07,
+                duration: 0.7,
+                ease: 'power2.inOut',
+                spin: curLayout === 0,
+                simple: true,
+                onEnter: (elements, animation) =>
+                    gsap.fromTo(
+                        elements,
+                        { opacity: 0 },
+                        { opacity: 1, delay: animation.duration() - 0.1 }
+                    ),
+                onLeave: (elements) => gsap.to(elements, { opacity: 0 }),
+            });
+
+            gsap.delayedCall(curLayout === 0 ? 3.5 : 1.5, nextState);
+        }
+        gsap.delayedCall(1, nextState);
+    </script>
+</body>
+
+</html>
