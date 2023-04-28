@@ -180,4 +180,9 @@ a {
   .navbar__icons.active {
     display: flex;
   }
+  
+   .slider__item img {
+    width: 100vw;
+    height: 100vh;
+  }
 }
